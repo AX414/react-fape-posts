@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { mockPosts } from '../mockPosts';
+import { mockPosts } from '../Home/Posts/mockPosts';
 import { useEffect, useState } from "react";
+import Header from "../../Header/Header";
+import Footer from "../../Footer/Footer";
 
 // Função para gerar uma cor aleatória
 function getRandomGradient() {
@@ -101,6 +103,8 @@ function PostContent() {
   }
 
   return (
+    <>
+    <Header/>
     <Container>
       {post.thumbnail && !imgErro ? (
         <Thumbnail
@@ -125,6 +129,8 @@ function PostContent() {
         <AuthorName>{post.autor.nome}</AuthorName>
       </AuthorSection>
     </Container>
+    <Footer/>
+    </>
   );
 
 }
