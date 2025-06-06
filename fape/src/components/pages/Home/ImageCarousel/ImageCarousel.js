@@ -3,13 +3,14 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import styled from 'styled-components';
 
 const CarouselContainer = styled.div`
-  margin-top: 5%;
-  width: 100vw;
+  padding: 120px clamp(16px, 10%, 80px) 0;
+  width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
 
   .carousel .slide {
     position: relative;
-    overflow: hidden; /* Isso garante que a legenda não vaze */
+    overflow: hidden;
   }
 
   .carousel .slide img {
@@ -17,6 +18,8 @@ const CarouselContainer = styled.div`
     object-fit: cover;
     width: 100%;
     display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   .carousel .slide::after {
@@ -31,13 +34,10 @@ const CarouselContainer = styled.div`
   }
 
   @media (max-width: 768px) {
+    padding: 100px 16px 0;
+
     .carousel .slide img {
       height: 200px;
-    }
-
-    .slide-content {
-      font-size: 16px;
-      padding: 6px 12px;
     }
   }
 `;

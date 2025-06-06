@@ -6,25 +6,20 @@ const Logo = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 20px; // padding uniforme
 
   @media (max-width: 768px) {
-    padding: 0 10px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: inline-block; /* ou block */
-  width: 100%;
+  padding: 0 10px;
+  flex-direction: column;
+  align-items: flex-start;
+}
 `;
 
 const Imagem = styled.img`
-  width: 10%;
+  width: 30%;
   height: auto;
   margin-left: 8%;
-  padding: 10px 0;
+  padding: 10px 0 10px 0;
 
   @media (max-width: 768px) {
     width: 30%;
@@ -35,9 +30,9 @@ const Imagem = styled.img`
 function HeaderLogo() {
   return (
     <Logo>
-      <StyledLink to="/">
+      <Link to="/">
         <Imagem src="/images/logo.png" alt="logo" />
-      </StyledLink>
+      </Link>
     </Logo>
   );
 }

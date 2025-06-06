@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { mockPosts } from './mockPosts';
-import PostCard from './PostCard/PostCard';
+import FadeInPostCard from './Animations/FadeInPostCard/FadeInPostCard';
+import SearchPosts from './SearchPosts/SearchPosts';
+import React from 'react';
 
 const GridContainer = styled.div`
   display: grid;
@@ -61,23 +63,39 @@ function parseDate(dateStr) {
 function Posts() {
   const POSTS_PER_PAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Ordena os posts da data mais recente para a mais antiga
-  const sortedPosts = [...mockPosts].sort((a, b) => parseDate(b.data) - parseDate(a.data));
+  // Filtra os posts pelo título conforme o termo buscado (case insensitive)
+  const filteredPosts = mockPosts.filter(post =>
+    post.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // Pega os posts da página atual
+  // Ordena os posts filtrados da data mais recente para a mais antiga
+  const sortedPosts = [...filteredPosts].sort(
+    (a, b) => parseDate(b.data) - parseDate(a.data)
+  );
+
+  // Calcula paginação baseado no filteredPosts
+  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
   const currentPosts = sortedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+  // Resetar página para 1 se o filtro mudar para evitar página inexistente
+  // Use useEffect para isso:
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   return (
     <>
+      <SearchPosts searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <GridContainer>
-        {currentPosts.map((post) => (
-          <PostCard key={post.id} post={post} />
+        {currentPosts.map(post => (
+          <FadeInPostCard key={post.id} post={post} />
         ))}
       </GridContainer>
+
       {totalPages > 1 && (
         <PaginationContainer>
           <PageButton

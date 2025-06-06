@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { mockPosts } from '../Home/Posts/mockPosts';
+import { mockPosts } from '../mockPosts';
+import { useEffect, useState } from "react";
 
 // Função para gerar uma cor aleatória
 function getRandomGradient() {
@@ -88,6 +88,11 @@ const AuthorName = styled.p`
 function PostContent() {
   const { id } = useParams();
   const [imgErro, setImgErro] = useState(false);
+
+  // Força scroll para o topo ao carregar o post
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]); // roda sempre que o id mudar (ou seja, ao entrar no post)
 
   const post = mockPosts.find(p => p.id === id);
 
