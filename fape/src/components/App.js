@@ -14,12 +14,14 @@ const AppContainer = styled.div`
   overflow-x: hidden;
 `;
 
+const repoName = '/react-fape-posts'; // meu repo no github pages
+
 function App() {
   return (
-    <Router>
+    <Router basename={repoName}>
       <AppContainer>
         <Header />
-        <Main /> {/* ← aqui vai as rotas do meu sistema*/}
+        <Main />
         <Footer />
         <ScrollToTopButton />
       </AppContainer>

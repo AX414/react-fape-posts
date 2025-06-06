@@ -16,8 +16,8 @@ function Main() {
   return (
     <MainContainer>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/post/:id" element={<PostContent />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/post/:id" element={<PostContent />} />
       </Routes>
     </MainContainer>
   );
