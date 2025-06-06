@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
@@ -14,11 +14,9 @@ const AppContainer = styled.div`
   overflow-x: hidden;
 `;
 
-const repoName = '/react-fape-posts'; // meu repo no github pages
-
 function App() {
   return (
-    <Router basename={repoName}>
+    <Router>
       <AppContainer>
         <Header />
         <Main />
