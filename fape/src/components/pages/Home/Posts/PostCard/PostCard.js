@@ -1,6 +1,71 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+
+// Styled component Card definido fora para evitar recriação em cada render
+const Card = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-family: 'PT Sans Narrow', sans-serif;
+  color: inherit;
+  text-decoration: none;
+  height: 380px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+
+  img, div {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    margin: 16px;
+    font-size: 18px;
+    color: #043854;
+    flex-shrink: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  time {
+    margin: 0 16px 8px;
+    font-size: 12px;
+    color: #999;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0 16px 8px;
+    font-size: 14px;
+    color: #555;
+    flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .author {
+    margin: 0 16px 16px;
+    font-size: 13px;
+    color: #777;
+    font-style: italic;
+    flex-shrink: 0;
+  }
+`;
 
 function PostCard({ post }) {
   const [imgError, setImgError] = useState(false);
@@ -12,75 +77,11 @@ function PostCard({ post }) {
     return [randomHue1, randomHue2];
   });
 
-  const Card = styled(Link)`
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    font-family: 'PT Sans Narrow', sans-serif;
-    color: inherit;
-    text-decoration: none;
-    height: 380px;
-    transition: box-shadow 0.3s ease;
-
-    &:hover {
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    img, div {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-
-    h3 {
-      margin: 16px;
-      font-size: 18px;
-      color: #043854;
-      flex-shrink: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;  
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    time {
-      margin: 0 16px 8px;
-      font-size: 12px;
-      color: #999;
-      flex-shrink: 0;
-    }
-
-    p {
-      margin: 0 16px 8px;
-      font-size: 14px;
-      color: #555;
-      flex-grow: 1;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-    }
-
-    .author {
-      margin: 0 16px 16px;
-      font-size: 13px;
-      color: #777;
-      font-style: italic;
-      flex-shrink: 0;
-    }
-  `;
-
   return (
     <Card to={`/post/${post.id}`}>
       {!imgError ? (
         <img
-          src={post.thumbnail}
+          src={process.env.PUBLIC_URL + '/' + post.thumbnail}
           alt={post.titulo}
           onError={() => setImgError(true)}
         />

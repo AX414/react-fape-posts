@@ -104,7 +104,7 @@ function PostContent() {
     <Container>
       {post.thumbnail && !imgErro ? (
         <Thumbnail
-          src={post.thumbnail}
+          src={process.env.PUBLIC_URL + '/' + post.thumbnail}
           alt={post.titulo}
           onError={() => setImgErro(true)}
         />
@@ -118,11 +118,15 @@ function PostContent() {
       <Content>{post.conteudo}</Content>
 
       <AuthorSection>
-        <AuthorThumbnail src={post.autor.thumbnail} alt={post.autor.nome} />
+        <AuthorThumbnail
+          src={process.env.PUBLIC_URL + '/' + post.autor.thumbnail}
+          alt={post.autor.nome}
+        />
         <AuthorName>{post.autor.nome}</AuthorName>
       </AuthorSection>
     </Container>
   );
+
 }
 
 export default PostContent;

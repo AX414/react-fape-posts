@@ -68,15 +68,15 @@ function ImageCarousel() {
     <CarouselContainer>
       <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false}>
         <div>
-          <img src="/images/carousel/carousel1.jpg" alt="Imagem 1" />
+          <img src={process.env.PUBLIC_URL + "/images/carousel/carousel1.jpg"} alt="Imagem 1" />
           <SlideContent>Bem-vindo ao nosso site</SlideContent>
         </div>
         <div>
-          <img src="/images/carousel/carousel2.jpg" alt="Imagem 2" />
+          <img src={process.env.PUBLIC_URL + "/images/carousel/carousel2.jpg"} alt="Imagem 2" />
           <SlideContent>Conheça nossos serviços</SlideContent>
         </div>
         <div>
-          <img src="/images/carousel/carousel3.jpg" alt="Imagem 3" />
+          <img src={process.env.PUBLIC_URL + "/images/carousel/carousel3.jpg"} alt="Imagem 3" />
           <SlideContent>Fale conosco para saber mais</SlideContent>
         </div>
       </Carousel>
