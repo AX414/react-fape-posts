@@ -34,7 +34,7 @@ const CarouselContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    padding: 100px 16px 0;
+    padding: 25px 16px 0;
 
     .carousel .slide img {
       height: 200px;

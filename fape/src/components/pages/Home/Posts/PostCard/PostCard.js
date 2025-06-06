@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-// Styled component Card definido fora para evitar recriação em cada render
 const Card = styled(Link)`
   display: flex;
   flex-direction: column;
@@ -14,8 +13,9 @@ const Card = styled(Link)`
   font-family: 'PT Sans Narrow', sans-serif;
   color: inherit;
   text-decoration: none;
-  height: 380px;
   transition: box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 400px; /* limite de tamanho */
 
   &:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -23,14 +23,14 @@ const Card = styled(Link)`
 
   img, div {
     width: 100%;
-    height: 180px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     flex-shrink: 0;
   }
 
   h3 {
     margin: 16px;
-    font-size: 18px;
+    font-size: 1rem;
     color: #043854;
     flex-shrink: 0;
     display: -webkit-box;
@@ -42,14 +42,14 @@ const Card = styled(Link)`
 
   time {
     margin: 0 16px 8px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #999;
     flex-shrink: 0;
   }
 
   p {
     margin: 0 16px 8px;
-    font-size: 14px;
+    font-size: 0.9rem;
     color: #555;
     flex-grow: 1;
     overflow: hidden;
@@ -60,12 +60,14 @@ const Card = styled(Link)`
 
   .author {
     margin: 0 16px 16px;
-    font-size: 13px;
+    font-size: 0.8rem;
     color: #777;
     font-style: italic;
     flex-shrink: 0;
   }
 `;
+
+
 
 function PostCard({ post }) {
   const [imgError, setImgError] = useState(false);

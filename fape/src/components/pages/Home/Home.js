@@ -8,11 +8,11 @@ import ScrollToTopButton from '../../ScroolToTop/ScroolToTop';
 const HomeContainer = styled.main`
     flex: 1;
     flex-grow: 1;
-  padding-top: 60px;
+    padding-top: 60px;
 
-  @media (max-width: 768px) {
-    padding-top: 50px;
-  }
+    @media (max-width: 768px) {
+        padding-top: 50px;
+    }
 `
 
 const TituloContainer = styled.h2`

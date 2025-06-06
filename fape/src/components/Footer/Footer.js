@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import FadeInSection from "../pages/Home/Posts/Animations/FadeInSection/FadeInSection";
-import { useOnScreen } from "../pages/Home/Posts/Animations/useOnScreen";
 
 const FooterContainer = styled.footer`
     background-color: #F2F2F2;
@@ -78,11 +76,7 @@ const CopyrightContainer = styled.div`
 `
 
 function Footer() {
-
-    const [ref, isVisible] = useOnScreen({ threshold: 0.1 });
-
     return (
-        <FadeInSection ref={ref} className={isVisible ? 'visible' : ''}>
             <FooterContainer>
                 <HorariosContainer>
                     <p>Horário de funcionamento das 08:00 às 18:00</p>
@@ -119,6 +113,7 @@ function Footer() {
                                 style={{ border: 0 }}
                                 allowFullScreen=""
                                 loading="lazy"
+                                title="Mapa"
                                 referrerPolicy="no-referrer-when-downgrade"
                             ></iframe>
                         </div>
@@ -134,7 +129,6 @@ function Footer() {
                     <p>FAPE - Faculdade de Presidente Epitácio | Todos os direitos reservados © 2025.</p>
                 </CopyrightContainer>
             </FooterContainer>
-        </FadeInSection>
     );
 }
 

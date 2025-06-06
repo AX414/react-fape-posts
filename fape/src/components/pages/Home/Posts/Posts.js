@@ -10,6 +10,13 @@ const GridContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   padding: 40px clamp(16px, 10%, 80px);
+  justify-content: center;
+
+  &.single-post {
+    max-width: 500px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+  }
 `;
 
 const PaginationContainer = styled.div`
@@ -81,20 +88,25 @@ function Posts() {
   const currentPosts = sortedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
   // Resetar página para 1 se o filtro mudar para evitar página inexistente
-  // Use useEffect para isso:
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
+
+  // Scroll para topo quando currentPage mudar
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   return (
     <>
       <SearchPosts searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      <GridContainer>
+      <GridContainer className={currentPosts.length === 1 ? 'single-post' : ''}>
         {currentPosts.map(post => (
           <FadeInPostCard key={post.id} post={post} />
         ))}
       </GridContainer>
+
 
       {totalPages > 1 && (
         <PaginationContainer>

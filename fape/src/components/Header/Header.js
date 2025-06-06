@@ -1,5 +1,6 @@
 import HeaderLogo from './HeaderLogo/HeaderLogo';
 import styled from "styled-components";
+import { Link, useLocation } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -12,12 +13,30 @@ const HeaderContainer = styled.header`
   z-index: 1000;
 `;
 
-function Header(){
-    return(
-        <HeaderContainer>
-            <HeaderLogo/>
-        </HeaderContainer>
-    );
+const StyledLink = styled(Link)`
+  color: #043854;
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 5%;
+  align-self: center;
+  font-size: 20px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+function Header() {
+  const location = useLocation();
+  return (
+    <HeaderContainer>
+      <HeaderLogo />
+      {/* Exibe o link apenas se não estiver em /indices */}
+      {location.pathname !== '/indices' && (
+        <StyledLink to="/indices">ÍNDICES</StyledLink>
+      )}
+    </HeaderContainer>
+  );
 }
 
 export default Header;
