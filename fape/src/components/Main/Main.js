@@ -1,30 +1,16 @@
-import styled from "styled-components";
-import ImageCarousel from "./ImageCarousel/ImageCarousel";
-import Posts from "./Posts/Posts";
+/* Aqui é onde as rotas do sistema ficam configuradas */
 
-const MainContainer = styled.main`
-    flex: 1;
-`
+import { Routes, Route } from "react-router-dom";
+import Home from "../pages/Home/Home";
+import PostContent from "../pages/PostContent/PostContent";
 
-const TituloContainer = styled.h2`
-    color: black;
-    padding: 2px 0 2px 0;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    font-family: 'PT Sans Narrow', sans-serif;
-`
-
-function Main(){
-    return(
-        <MainContainer>
-            <ImageCarousel/>
-            <TituloContainer>
-                PUBLICAÇÕES
-            </TituloContainer>
-            <Posts/>
-        </MainContainer>
-    );
+function Main() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/post/:id" element={<PostContent />} />
+    </Routes>
+  );
 }
 
 export default Main;

@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
@@ -12,11 +13,13 @@ const AppContainer = styled.div`
 
 function App() {
   return (
-    <AppContainer>
-      <Header/>
-      <Main/>
-      <Footer/>
-    </AppContainer>
+    <Router>
+      <AppContainer>
+        <Header />
+        <Main/> {/* ← aqui vai as rotas do meu sistema*/}
+        <Footer />
+      </AppContainer>
+    </Router>
   );
 }
 
