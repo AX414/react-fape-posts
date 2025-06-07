@@ -7,17 +7,18 @@ import React from 'react';
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
   gap: 20px;
   padding: 40px clamp(16px, 10%, 80px);
   justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
 
   &.single-post {
-    max-width: 500px;
-    margin: 0 auto;
-    grid-template-columns: 1fr;
+    justify-content: center;
   }
 `;
+
 
 const PaginationContainer = styled.div`
   display: flex;

@@ -24,6 +24,10 @@ const StyledLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+
+  @media (max-width: 768px) {
+    margin-right: 5%;
+  }
 `;
 
 function Header() {

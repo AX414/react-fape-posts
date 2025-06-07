@@ -22,8 +22,7 @@ const Imagem = styled.img`
   padding: 10px 0;
 
   @media (max-width: 768px) {
-    width: 30%;
-    margin-bottom: 1rem;
+    width: 50%;
   }
 `;
 
