@@ -1,24 +1,38 @@
 import styled from "styled-components";
-import Footer from "../../Footer/Footer";
-import Header from "../../Header/Header";
-import ScroolToTop from "../../ScroolToTop/ScroolToTop";
 
 const PageContainer = styled.div`
-  margin-top: 5%;
-  padding: 40px clamp(16px, 8%, 80px);
+  padding: 20px clamp(16px, 6%, 80px);
   font-family: 'PT Sans Narrow', sans-serif;
 
   @media (max-width: 768px) {
-    margin-top: 15%;
+    padding-top: 10px;
+  }
+
+  @media (max-width: 480px) and (orientation: landscape) {
+    padding-top: 20px;
   }
 `;
 
+const GridSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+  gap: 20px;
+  padding: 40px clamp(16px, 10%, 80px);
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
 const Section = styled.div`
-  margin-bottom: 32px;
+  background: #f8f9fa;
+  border: 1px solid #dce1e5;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #043854;
   margin-bottom: 12px;
 `;
@@ -26,7 +40,7 @@ const SectionTitle = styled.h2`
 const Link = styled.a`
   display: block;
   color: #065a81;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   text-decoration: none;
   margin-bottom: 8px;
 
@@ -37,9 +51,8 @@ const Link = styled.a`
 
 function Indices() {
   return (
-    <>
-      <Header />
-      <PageContainer>
+    <PageContainer>
+      <GridSection>
         <Section>
           <SectionTitle>Secretaria Acadêmica</SectionTitle>
           <Link href="">Requerimento de documentos</Link>
@@ -74,10 +87,8 @@ function Indices() {
           <Link href="">Comprovante de pagamento</Link>
           <Link href="">Negociação de mensalidade</Link>
         </Section>
-      </PageContainer>
-      <ScroolToTop/>
-      <Footer />
-    </>
+      </GridSection>
+    </PageContainer>
   );
 }
 

@@ -15,7 +15,7 @@ const Card = styled(Link)`
   text-decoration: none;
   transition: box-shadow 0.3s ease;
   width: 100%;
-  max-width: 400px; /* limite de tamanho */
+  max-width: 400px;
 
   &:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -67,23 +67,37 @@ const Card = styled(Link)`
   }
 `;
 
-
-
 function PostCard({ post }) {
   const [imgError, setImgError] = useState(false);
 
-  // Gera as cores do gradiente só na montagem do componente
   const [hues] = useState(() => {
     const randomHue1 = Math.floor(Math.random() * 360);
     const randomHue2 = (randomHue1 + 60) % 360;
     return [randomHue1, randomHue2];
   });
 
+  const formatDate = (isoDate) => {
+    if (!isoDate) return '';
+    const d = new Date(isoDate);
+    return d.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const hasValidThumbnail = post.thumbnail && !imgError;
+
+  const imgSrc =
+    post.thumbnail && post.thumbnail.startsWith('http')
+      ? post.thumbnail
+      : process.env.PUBLIC_URL + '/' + post.thumbnail;
+
   return (
     <Card to={`/post/${post.id}`}>
-      {!imgError ? (
+      {hasValidThumbnail ? (
         <img
-          src={process.env.PUBLIC_URL + '/' + post.thumbnail}
+          src={imgSrc}
           alt={post.titulo}
           onError={() => setImgError(true)}
         />
@@ -95,9 +109,9 @@ function PostCard({ post }) {
         />
       )}
       <h3>{post.titulo}</h3>
-      <time>{post.data}</time>
+      <time>{formatDate(post.data)}</time>
       <p>{post.resumo}</p>
-      <p className="author">Autor: {post.autor.nome}</p>
+      <p className="author">Autor: {post.author?.nome || 'Desconhecido'}</p>
     </Card>
   );
 }

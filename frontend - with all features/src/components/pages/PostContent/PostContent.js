@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { mockPosts } from '../Home/Posts/mockPosts';
 import { useEffect, useState } from "react";
 import Header from "../../Header/Header";
 import Footer from "../../Footer/Footer";
+import { supabase } from "../../../supabaseClient";
 
-// Função para gerar uma cor aleatória
+// Função para gerar uma cor aleatória para fallback
 function getRandomGradient() {
   const colors = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#A29BFE', '#6C5CE7'];
-  const [c1, c2] = [colors[Math.floor(Math.random() * colors.length)], colors[Math.floor(Math.random() * colors.length)]];
+  const [c1, c2] = [
+    colors[Math.floor(Math.random() * colors.length)], 
+    colors[Math.floor(Math.random() * colors.length)]
+  ];
   return `linear-gradient(135deg, ${c1}, ${c2})`;
 }
 
@@ -89,50 +92,100 @@ const AuthorName = styled.p`
 
 function PostContent() {
   const { id } = useParams();
-  const [imgErro, setImgErro] = useState(false);
+  const [post, setPost] = useState(null);
+  const [imgError, setImgError] = useState(false);
+  const [authorImgError, setAuthorImgError] = useState(false);
 
-  // Força scroll para o topo ao carregar o post
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]); // roda sempre que o id mudar (ou seja, ao entrar no post)
+    async function fetchPost() {
+      const { data, error } = await supabase
+        .from('posts')
+        .select(`
+          *,
+          author:author (
+            id,
+            nome,
+            thumbnail
+          )
+        `)
+        .eq('id', id)
+        .single(); // traz apenas um resultado
 
-  const post = mockPosts.find(p => p.id === id);
+      if (error) {
+        console.error("Erro ao buscar post:", error);
+        setPost(null);
+      } else {
+        setPost(data);
+      }
+    }
+
+    fetchPost();
+    window.scrollTo(0, 0);
+    setImgError(false);
+    setAuthorImgError(false);
+  }, [id]);
+
+  const formatDate = (isoDate) => {
+    if (!isoDate) return '';
+    const d = new Date(isoDate);
+    return d.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
 
   if (!post) {
     return <Container>Post não encontrado.</Container>;
   }
 
+  const postThumbnailSrc = post.thumbnail?.startsWith('http')
+    ? post.thumbnail
+    : process.env.PUBLIC_URL + '/' + post.thumbnail;
+
+  const authorThumbnailSrc = post.author?.thumbnail?.startsWith('http')
+    ? post.author.thumbnail
+    : process.env.PUBLIC_URL + '/' + post.author?.thumbnail;
+
   return (
     <>
-    <Header/>
-    <Container>
-      {post.thumbnail && !imgErro ? (
-        <Thumbnail
-          src={process.env.PUBLIC_URL + '/' + post.thumbnail}
-          alt={post.titulo}
-          onError={() => setImgErro(true)}
-        />
-      ) : (
-        <FallbackGradient />
-      )}
+      <Header />
+      <Container>
+        {post.thumbnail && !imgError ? (
+          <Thumbnail
+            src={postThumbnailSrc}
+            alt={post.titulo}
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <FallbackGradient />
+        )}
 
-      <Title>{post.titulo}</Title>
-      <DateText>{post.data}</DateText>
-      <Separator />
-      <Content>{post.conteudo}</Content>
+        <Title>{post.titulo}</Title>
+        <DateText>{formatDate(post.data)}</DateText>
+        <Separator />
+        <Content dangerouslySetInnerHTML={{ __html: post.conteudo }} />
 
-      <AuthorSection>
-        <AuthorThumbnail
-          src={process.env.PUBLIC_URL + '/' + post.autor.thumbnail}
-          alt={post.autor.nome}
-        />
-        <AuthorName>{post.autor.nome}</AuthorName>
-      </AuthorSection>
-    </Container>
-    <Footer/>
+        <AuthorSection>
+          {post.author?.thumbnail && !authorImgError ? (
+            <AuthorThumbnail
+              src={authorThumbnailSrc}
+              alt={post.author.nome}
+              onError={() => setAuthorImgError(true)}
+            />
+          ) : (
+            <AuthorThumbnail
+              as="div"
+              style={{ backgroundColor: '#ccc' }}
+              aria-label="Autor sem foto"
+            />
+          )}
+          <AuthorName>{post.author?.nome || 'Autor desconhecido'}</AuthorName>
+        </AuthorSection>
+      </Container>
+      <Footer />
     </>
   );
-
 }
 
 export default PostContent;

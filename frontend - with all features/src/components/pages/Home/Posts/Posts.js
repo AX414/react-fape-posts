@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { mockPosts } from './mockPosts';
+import { supabase } from '../../../../supabaseClient';
 import FadeInPostCard from './Animations/FadeInPostCard/FadeInPostCard';
 import SearchPosts from './SearchPosts/SearchPosts';
-import React from 'react';
+import { mockPosts } from './mockPosts';
 
 const GridContainer = styled.div`
   display: grid;
@@ -18,7 +18,6 @@ const GridContainer = styled.div`
     justify-content: center;
   }
 `;
-
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -47,68 +46,51 @@ const PageButton = styled.button`
   }
 `;
 
-// Função para converter data textual para objeto Date para ordenação
-function parseDate(dateStr) {
-  // Exemplo: "12 de Junho de 2025"
-  const [day, , monthName, , year] = dateStr.split(' ');
-  const months = {
-    Janeiro: 0,
-    Fevereiro: 1,
-    Março: 2,
-    Abril: 3,
-    Maio: 4,
-    Junho: 5,
-    Julho: 6,
-    Agosto: 7,
-    Setembro: 8,
-    Outubro: 9,
-    Novembro: 10,
-    Dezembro: 11,
-  };
-  return new Date(year, months[monthName], day);
-}
-
 function Posts() {
   const POSTS_PER_PAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Estado para armazenar posts vindos da API ou mock
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch('http://localhost:4000/api/posts');
-        if (!res.ok) throw new Error('Erro na resposta da API');
-        const data = await res.json();
+        const { data, error } = await supabase
+          .from('posts')
+          .select(`
+            *,
+            author:author (
+              id,
+              nome,
+              thumbnail
+            )
+          `)
+          .order('data', { ascending: false });
+
+        if (error) throw error;
         setPosts(data);
       } catch (error) {
-        console.error('Erro ao buscar posts:', error);
-        setPosts(mockPosts); // fallback pro mock
+        console.error('Erro ao buscar posts do Supabase:', error);
+        setPosts(mockPosts);
       }
     }
+
     fetchPosts();
   }, []);
 
-  // Agora a filtragem, ordenação e paginação usam `posts` em vez de mockPosts
   const filteredPosts = posts.filter(post =>
     post.titulo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sortedPosts = [...filteredPosts].sort(
-    (a, b) => parseDate(b.data) - parseDate(a.data)
-  );
-
-  const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const currentPosts = sortedPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+  const currentPosts = filteredPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
 
