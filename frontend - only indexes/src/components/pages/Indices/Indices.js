@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 const PageContainer = styled.div`
-  padding: 40px clamp(16px, 6%, 80px);
+  padding: 20px clamp(16px, 6%, 80px);
   font-family: 'PT Sans Narrow', sans-serif;
 
   @media (max-width: 768px) {
-    padding-top: 60px;
+    padding-top: 10px;
   }
 
   @media (max-width: 480px) and (orientation: landscape) {
-    padding-top: 80px;
+    padding-top: 20px;
   }
 `;
 

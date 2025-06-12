@@ -28,7 +28,7 @@ const LogoSection = styled.div`
 
 function Header() {
   return (
-    <HeaderContainer>
+    <HeaderContainer title="Clique na logo para acessar o site oficial!">
       <LogoSection>
         <HeaderLogo />
       </LogoSection>
