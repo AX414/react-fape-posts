@@ -36,7 +36,7 @@ const MenuSection = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 5vw;
+  margin-right: 6vw;
   right: 0;
 `;
 

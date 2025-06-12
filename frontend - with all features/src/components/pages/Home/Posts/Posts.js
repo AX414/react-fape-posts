@@ -26,9 +26,10 @@ const PaginationContainer = styled.div`
   gap: 8px;
 `;
 
+// Usar prop prefixada $active para evitar passar prop inválida para DOM
 const PageButton = styled.button`
-  background: ${(props) => (props.active ? '#043854' : 'white')};
-  color: ${(props) => (props.active ? 'white' : '#043854')};
+  background: ${(props) => (props.$active ? '#043854' : 'white')};
+  color: ${(props) => (props.$active ? 'white' : '#043854')};
   border: 1px solid #043854;
   border-radius: 4px;
   padding: 8px 12px;
@@ -78,18 +79,22 @@ function Posts() {
     fetchPosts();
   }, []);
 
+  // Filtra posts pelo título conforme o termo buscado
   const filteredPosts = posts.filter(post =>
     post.titulo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Paginação
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
   const currentPosts = filteredPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
+  // Resetar página para 1 quando o termo de busca mudar
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
+  // Scroll para topo da página quando trocar página
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
@@ -109,6 +114,7 @@ function Posts() {
           <PageButton
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
+            aria-label="Página anterior"
           >
             Anterior
           </PageButton>
@@ -116,8 +122,10 @@ function Posts() {
           {[...Array(totalPages)].map((_, i) => (
             <PageButton
               key={i + 1}
-              active={currentPage === i + 1}
+              $active={currentPage === i + 1}
               onClick={() => setCurrentPage(i + 1)}
+              aria-current={currentPage === i + 1 ? 'page' : undefined}
+              aria-label={`Página ${i + 1}`}
             >
               {i + 1}
             </PageButton>
@@ -126,6 +134,7 @@ function Posts() {
           <PageButton
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === totalPages}
+            aria-label="Próxima página"
           >
             Próxima
           </PageButton>

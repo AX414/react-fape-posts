@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import Footer from "../../Footer/Footer";
+import Header from "../../Header/Header";
 
 const PageContainer = styled.div`
-  padding: 20px clamp(16px, 6%, 80px);
+  padding: 50px clamp(16px, 6%, 80px);
   font-family: 'PT Sans Narrow', sans-serif;
 
   @media (max-width: 768px) {
@@ -51,6 +53,8 @@ const Link = styled.a`
 
 function Indices() {
   return (
+    <>
+    <Header />
     <PageContainer>
       <GridSection>
         <Section>
@@ -89,6 +93,8 @@ function Indices() {
         </Section>
       </GridSection>
     </PageContainer>
+    <Footer/>
+    </>
   );
 }
 
