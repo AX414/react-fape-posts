@@ -1,4 +1,3 @@
-// src/mockPosts.js
 export const mockPosts = [
   {
     id: '1',

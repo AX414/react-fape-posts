@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Header from "../../Header/Header";
 import Footer from "../../Footer/Footer";
 import { supabase } from "../../../supabaseClient";
+import {mockPosts} from '../../pages/Home/Posts/mockPosts';
 
 // Função para gerar uma cor aleatória para fallback
 function getRandomGradient() {
@@ -98,24 +99,34 @@ function PostContent() {
 
   useEffect(() => {
     async function fetchPost() {
-      const { data, error } = await supabase
-        .from('posts')
-        .select(`
-          *,
-          author:author (
-            id,
-            nome,
-            thumbnail
-          )
-        `)
-        .eq('id', id)
-        .single(); // traz apenas um resultado
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select(`
+            *,
+            author:author (
+              id,
+              nome,
+              thumbnail
+            )
+          `)
+          .eq('id', id)
+          .single();
 
-      if (error) {
-        console.error("Erro ao buscar post:", error);
-        setPost(null);
-      } else {
+        if (error || !data) {
+          throw error || new Error('Post não encontrado no Supabase');
+        }
         setPost(data);
+      } catch (error) {
+        console.error("Erro ao buscar post do Supabase:", error);
+
+        // fallback: buscar no mockPosts
+        const fallbackPost = mockPosts.find(p => String(p.id) === String(id));
+        if (fallbackPost) {
+          setPost(fallbackPost);
+        } else {
+          setPost(null);
+        }
       }
     }
 
