@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/react-fape-posts/static/js/main.3f2afa6e.js",
+    "main.js": "/react-fape-posts/static/js/main.007040d3.js",
     "static/js/453.ce3e2182.chunk.js": "/react-fape-posts/static/js/453.ce3e2182.chunk.js",
     "index.html": "/react-fape-posts/index.html",
-    "main.3f2afa6e.js.map": "/react-fape-posts/static/js/main.3f2afa6e.js.map",
+    "main.007040d3.js.map": "/react-fape-posts/static/js/main.007040d3.js.map",
     "453.ce3e2182.chunk.js.map": "/react-fape-posts/static/js/453.ce3e2182.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.3f2afa6e.js"
+    "static/js/main.007040d3.js"
   ]
 }
