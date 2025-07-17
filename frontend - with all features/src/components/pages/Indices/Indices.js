@@ -18,12 +18,19 @@ const PageContainer = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 32px;
-  padding: 0 16px;
+
+  position: sticky;
+  top: 64px; /* Altura do seu header fixo */
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    margin-top: 32px;
+    top: 100px;
+  }
 `;
 
 const SearchInput = styled.input`
-  width: 100%;
+  width: 80%;
   max-width: 400px;
   padding: 10px 14px;
   font-size: 16px;
@@ -217,7 +224,7 @@ function Indices() {
       <SearchContainer>
         <SearchInput
           type="search"
-          placeholder="O que você procura?"
+          placeholder="Buscar por palavra-chave..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           aria-label="Buscar índice"
@@ -225,16 +232,22 @@ function Indices() {
       </SearchContainer>
 
       <GridSection>
-        {filteredSections.map((section, index) => (
-          <Section key={index}>
-            <SectionTitle>{section.section}</SectionTitle>
-            {section.links.map((link, i) => (
-              <Link href={link.url} key={i}>
-                {link.title}
-              </Link>
-            ))}
-          </Section>
-        ))}
+        {filteredSections.length === 0 ? (
+          <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '2rem', color: '#666' }}>
+            Nenhum resultado encontrado.
+          </p>
+        ) : (
+          filteredSections.map((section, index) => (
+            <Section key={index}>
+              <SectionTitle>{section.section}</SectionTitle>
+              {section.links.map((link, i) => (
+                <Link href={link.url} key={i}>
+                  {link.title}
+                </Link>
+              ))}
+            </Section>
+          ))
+        )}
       </GridSection>
     </PageContainer>
   );
