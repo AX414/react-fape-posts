@@ -99,7 +99,7 @@ const sections = [
       { "title": "Horários das aulas", "href": "" },
       { "title": "Formulário de estágio", "href": "" },
       { "title": "Orientações de TCC (modelos, prazos, banca, normas)", "href": "" },
-      { "title": "Projetos Pedagócigos de Curso (PPC)", "href": "" },
+      { "title": "Projetos Pedagógicos de Curso (PPC)", "href": "" },
       { "title": "Corpo Docente", "href": "" },
       { "title": "Fale com a Coordenação", "href": "" }
     ]
