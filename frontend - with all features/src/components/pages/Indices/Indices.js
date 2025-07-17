@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import Footer from "../../Footer/Footer";
-import Header from "../../Header/Header";
+import { useState, useMemo } from "react";
 
+// Estilos
 const PageContainer = styled.div`
-  padding: 50px clamp(16px, 6%, 80px);
+  padding: 20px clamp(16px, 6%, 80px);
   font-family: 'PT Sans Narrow', sans-serif;
 
   @media (max-width: 768px) {
@@ -12,6 +12,29 @@ const PageContainer = styled.div`
 
   @media (max-width: 480px) and (orientation: landscape) {
     padding-top: 20px;
+  }
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  padding: 0 16px;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: 'PT Sans Narrow', sans-serif;
+
+  &:focus {
+    outline: none;
+    border-color: #043854;
+    box-shadow: 0 0 5px #065a81;
   }
 `;
 
@@ -51,117 +74,169 @@ const Link = styled.a`
   }
 `;
 
+// Dados estáticos
+const sections = [
+  {
+    "section": "Secretaria Acadêmica",
+    "links": [
+      { "title": "Requerimento de documentos", "href": "" },
+      { "title": "Calendário Acadêmico", "href": "" },
+      { "title": "Informações sobre Enade", "href": "" },
+      { "title": "Regulamento Acadêmico", "href": "" },
+      { "title": "Fale com a Secretaria", "href": "" }
+    ]
+  },
+  {
+    "section": "Coordenação de Curso",
+    "links": [
+      { "title": "Horários das aulas", "href": "" },
+      { "title": "Formulário de estágio", "href": "" },
+      { "title": "Orientações de TCC (modelos, prazos, banca, normas)", "href": "" },
+      { "title": "Projetos Pedagócigos de Curso (PPC)", "href": "" },
+      { "title": "Corpo Docente", "href": "" },
+      { "title": "Fale com a Coordenação", "href": "" }
+    ]
+  },
+  {
+    "section": "Biblioteca",
+    "links": [
+      { "title": "Tutorial de Pesquisa e uso da biblioteca", "href": "" },
+      { "title": "Catálogo online", "href": "" },
+      { "title": "Renovação de empréstimos", "href": "" },
+      { "title": "Bases de Dados e Periódicos", "href": "" },
+      { "title": "Biblioteca Digital E-books", "href": "" },
+      { "title": "Horário de funcionamento e contato", "href": "" }
+    ]
+  },
+  {
+    "section": "Suporte ao Aluno",
+    "links": [
+      { "title": "Plano de ensino", "href": "" },
+      { "title": "Frequência e notas", "href": "" },
+      { "title": "Ouvidoria", "href": "" },
+      { "title": "Apoio Psicopedagógico", "href": "" },
+      { "title": "Núcleo de Apoio ao Estudante (NAE)", "href": "" },
+      { "title": "Central de Estágios", "href": "" },
+      { "title": "Atléticas e Diretórios Acadêmicos", "href": "" },
+      { "title": "Ambiente Virtual de Aprendizagem", "href": "" },
+      { "title": "Acesso a materiais complementares de aulas", "href": "" },
+      { "title": "Atualização de dados cadastrais", "href": "" }
+    ]
+  },
+  {
+    "section": "Setor Financeiro",
+    "links": [
+      { "title": "Portal do Aluno", "href": "" },
+      { "title": "2ª via de boleto", "href": "" },
+      { "title": "Negociação de mensalidade", "href": "" },
+      { "title": "Informações sobre bolsas e descontos", "href": "" },
+      { "title": "Fale com o Financeiro (contato e horários)", "href": "" }
+    ]
+  },
+  {
+    "section": "Extensão e Pesquisa",
+    "links": [
+      { "title": "Projetos de Extensão (participação, editais)", "href": "" },
+      { "title": "Iniciação Científica (editais, como participar)", "href": "" },
+      { "title": "Eventos Acadêmicos (palestras, seminários, workshops)", "href": "" },
+      { "title": "Certificados dos Eventos", "href": "" },
+      { "title": "Grupos de Estudo e Pesquisa (GEP)", "href": "" }
+    ]
+  },
+  {
+    "section": "Notícias e Eventos",
+    "links": [
+      { "title": "Últimas notícias da FAPE", "href": "" },
+      { "title": "Agenda de Eventos (acadêmicos, culturais, esportivos)", "href": "" },
+      { "title": "Inscrições de Eventos", "href": "" },
+      { "title": "Mural de Avisos", "href": "" }
+    ]
+  },
+  {
+    "section": "Núcleo de Práticas Jurídicas",
+    "links": [
+      { "title": "Horários de atendimento da Coordenação", "href": "" },
+      { "title": "Regulamentos", "href": "" },
+      { "title": "Modelo de Peças Processuais", "href": "" },
+      { "title": "Documentos de Estágio", "href": "" },
+      { "title": "Concursos Jurídicos", "href": "" },
+      { "title": "Serviço de atendimento Jurídico - SAJ", "href": "" }
+    ]
+  },
+  {
+    "section": "Estágios e Licenciatura",
+    "links": [
+      { "title": "Laboratórios", "href": "" },
+      { "title": "Estágios Específicos", "href": "" },
+      { "title": "Estágios Esportivos e Treinamentos", "href": "" },
+      { "title": "Estágios em Escolas e Instituições Educacionais", "href": "" },
+      { "title": "Material de Apoio para Prática Docente", "href": "" },
+      { "title": "Legislação Educacional (LDB, BNCC)", "href": "" }
+    ]
+  },
+  {
+    "section": "Estácios em Administração e Contábeis",
+    "links": [
+      { "title": "FAPE Júnior", "href": "" },
+      { "title": "Documentos de Estágio", "href": "" },
+      { "title": "Notícias de Mercado (tendências, análises)", "href": "" },
+      { "title": "Conselhos Regionais (CRA, CRC)", "href": "" }
+    ]
+  }
+];
+
+
 function Indices() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredSections = useMemo(() => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return sections
+      .map((section) => {
+        const filteredLinks = section.links.filter(link =>
+          link.title.toLowerCase().includes(lowerSearch)
+        );
+
+        if (
+          section.section.toLowerCase().includes(lowerSearch) ||
+          filteredLinks.length > 0
+        ) {
+          return {
+            section: section.section,
+            links: filteredLinks.length > 0 ? filteredLinks : section.links,
+          };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+  }, [searchTerm]);
+
   return (
-    <>
-    <Header />
-    
-        <PageContainer>
+    <PageContainer>
+      <SearchContainer>
+        <SearchInput
+          type="search"
+          placeholder="O que você procura?"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          aria-label="Buscar índice"
+        />
+      </SearchContainer>
+
       <GridSection>
-        <Section>
-          <SectionTitle>Secretaria Acadêmica</SectionTitle>
-          <Link href="">Requerimento de documentos</Link>
-          <Link href="">Calendário Acadêmico</Link>
-          <Link href="">Informações sobre Enade</Link>
-          <Link href="">Regulamento Acadêmico</Link>
-          <Link href="">Fale com a Secretaria</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Coordenação de Curso</SectionTitle>
-          <Link href="">Horários das aulas</Link>
-          <Link href="">Formulário de estágio</Link>
-          <Link href="">Orientações de TCC (modelos, prazos, banca, normas)</Link>
-          <Link href="">Projetos Pedagócigos de Curso (PPC)</Link>
-          <Link href="">Corpo Docente</Link>
-          <Link href="">Fale com a Coordenação</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Biblioteca</SectionTitle>
-          <Link href="">Tutorial de Pesquisa e uso da biblioteca</Link>
-          <Link href="">Catálogo online</Link>
-          <Link href="">Renovação de empréstimos</Link>
-          <Link href="">Bases de Dados e Periódicos</Link>
-          <Link href="">Biblioteca Digital E-books</Link>
-          <Link href="">Horário de funcionamento e contato</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Suporte ao Aluno</SectionTitle>
-          <Link href="">Plano de ensino</Link>
-          <Link href="">Frequência e notas</Link>
-          <Link href="">Ouvidoria</Link>
-          <Link href="">Apoio Psicopedagógico</Link>
-          <Link href="">Núcleo de Apoio ao Estudante (NAE)</Link>
-          <Link href="">Central de Estágios</Link>
-          <Link href="">Atléticas e Diretórios Acadêmicos</Link>
-          <Link href="">Ambiente Virtual de Aprendizagem</Link>
-          <Link href="">Acesso a materiais complementares de aulas</Link>
-          <Link href="">Atualização de dados cadastrais</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Setor Financeiro</SectionTitle>
-          <Link href="">Portal do Aluno</Link>
-          <Link href="">2ª via de boleto</Link>
-          <Link href="">Negociação de mensalidade</Link>
-          <Link href="">Informações sobre bolsas e descontos</Link>
-          <Link href="">Fale com o Financeiro (contato e horários)</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Extensão e Pesquisa</SectionTitle>
-          <Link href="">Projetos de Extensão (participação, editais)</Link>
-          <Link href="">Iniciação Científica (editais, como participar)</Link>
-          <Link href="">Eventos Acadêmicos (palestras, seminários, workshops)</Link>
-          <Link href="">Certificados dos Eventos</Link>
-          <Link href="">Grupos de Estudo e Pesquisa (GEP)</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Notícias e Eventos</SectionTitle>
-          <Link href="">Últimas notícias da FAPE</Link>
-          <Link href="">Agenda de Eventos (acadêmicos, culturais, esportivos)</Link>
-          <Link href="">Inscrições de Eventos</Link>
-          <Link href="">Mural de Avisos</Link>
-        </Section>
-
-
-        <Section>
-          <SectionTitle>Núcleo de Práticas Jurídicas</SectionTitle>
-          <Link href="">Horários de atendimento da Coordenação</Link>
-          <Link href="">Regulamentos</Link>
-          <Link href="">Modelo de Peças Processuais</Link>
-          <Link href="">Documentos de Estágio</Link>
-          <Link href="">Concursos Jurídicos</Link>
-          <Link href="">Serviço de atendimento Jurídico - SAJ</Link>
-        </Section>
-
-
-        <Section>
-          <SectionTitle>Estágios e Licenciatura</SectionTitle>
-          <Link href="">Laboratórios</Link>
-          <Link href="">Estágios Específicos</Link>
-          <Link href="">Estágios Esportivos e Treinamentos</Link>
-          <Link href="">Estágios em Escolas e Instituições Educacionais</Link>
-          <Link href="">Material de Apoio para Prática Docente</Link>
-          <Link href="">Legislação Educacional (LDB, BNCC)</Link>
-        </Section>
-
-        <Section>
-          <SectionTitle>Estácios em Administração e Contábeis</SectionTitle>
-          <Link href="">FAPE Júnior</Link>
-          <Link href="">Documentos de Estágio</Link>
-          <Link href="">Notícias de Mercado (tendências, análises)</Link>
-          <Link href="">Conselhos Regionais (CRA, CRC)</Link>
-        </Section>
-
+        {filteredSections.map((section, index) => (
+          <Section key={index}>
+            <SectionTitle>{section.section}</SectionTitle>
+            {section.links.map((link, i) => (
+              <Link href={link.url} key={i}>
+                {link.title}
+              </Link>
+            ))}
+          </Section>
+        ))}
       </GridSection>
     </PageContainer>
-
-    <Footer/>
-    </>
   );
 }
 
